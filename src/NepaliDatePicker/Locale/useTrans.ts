@@ -5,10 +5,12 @@ import translations from "./translations"
 const useTrans = (currentLocale: localeType) => {
     return {
         trans: (key: string, locale?: localeType) => {
+            // eslint-disable-next-line no-prototype-builtins
             if (!translations.hasOwnProperty(key)) {
                 return key
             }
 
+            // @ts-ignore
             return translations[key][locale || currentLocale]
         },
 

@@ -1,13 +1,24 @@
 import { ADToBS } from "bikram-sambat-js"
-import React, { FunctionComponent, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { Calender } from "./Calender"
 import { useConfig } from "./Config"
 import { useTrans } from "./Locale"
 import { ENGLISH, INepaliDatePicker, localeType, NepaliDatepickerEvents } from "./Types"
 import { childOf, executionDelegation, stitchDate } from "./Utils/common"
 
-const NepaliDatePicker: FunctionComponent<INepaliDatePicker> = (props) => {
-    const { className, inputClassName, value, onChange, onSelect, options, todayIfEmpty } = props
+const NepaliDatePicker: React.FunctionComponent<INepaliDatePicker> = (props) => {
+    const {
+        className,
+        inputClassName,
+        value,
+        onChange,
+        onSelect,
+        options,
+        todayIfEmpty,
+        placeholder,
+        style,
+        inputStyle,
+    } = props
 
     const nepaliDatePickerWrapper = useRef<HTMLDivElement>(null)
     const nepaliDatePickerInput = useRef<HTMLInputElement>(null)
@@ -19,13 +30,13 @@ const NepaliDatePicker: FunctionComponent<INepaliDatePicker> = (props) => {
     const { numberTrans } = useTrans(getConfig<localeType>("currentLocale"))
 
     const toEnglish = useCallback((val: string): string => numberTrans(val, ENGLISH), [])
-    const returnDateValue = useCallback((val: string): string => numberTrans(val, options.valueLocale), [
-        options.valueLocale,
+    const returnDateValue = useCallback((val: string): string => numberTrans(val, options?.valueLocale), [
+        options?.valueLocale,
     ])
 
     useEffect(() => {
-        setConfig("currentLocale", options.calenderLocale)
-    }, [options.calenderLocale])
+        setConfig("currentLocale", options?.calenderLocale ?? "ne")
+    }, [options?.calenderLocale])
 
     useEffect(() => {
         setDate(toEnglish(value || (todayIfEmpty ? ADToBS(new Date()) : "")))
@@ -89,7 +100,7 @@ const NepaliDatePicker: FunctionComponent<INepaliDatePicker> = (props) => {
         (selectedDate) => {
             executionDelegation(
                 () => {
-                    if (options.closeOnSelect) {
+                    if (options?.closeOnSelect) {
                         setShowCalendar(false)
                     }
                 },
@@ -110,14 +121,16 @@ const NepaliDatePicker: FunctionComponent<INepaliDatePicker> = (props) => {
     }
 
     return (
-        <div ref={nepaliDatePickerWrapper} className={`nepali-date-picker ${className}`}>
+        <div ref={nepaliDatePickerWrapper} className={`nepali-date-picker ${className}`} style={style}>
             <input
                 type='text'
                 ref={nepaliDatePickerInput}
                 className={inputClassName}
-                readOnly={true}
+                readOnly
                 value={numberTrans(date)}
                 onClick={() => setShowCalendar((visible) => !visible)}
+                style={inputStyle}
+                placeholder={placeholder}
             />
             {showCalendar && <Calender value={date && date} events={datepickerEvents} />}
         </div>

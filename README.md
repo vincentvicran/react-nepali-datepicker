@@ -1,45 +1,48 @@
-# Nepali Datepicker (Bikram Sambat) - React.js Component
+# React Nepali Datepicker
 
-> Nepali Datepicker (Bikram Sambat) as a ReactJS component
+> Nepali Datepicker as a ReactJS input component with popover
 
-[![NPM](https://img.shields.io/npm/v/nepali-datepicker-reactjs.svg)](https://www.npmjs.com/package/nepali-datepicker-reactjs)
+[![NPM](https://img.shields.io/npm/v/react-nepali-datepicker-bs.svg)](https://www.npmjs.com/package/react-nepali-datepicker-bs)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-[![Build](https://img.shields.io/travis/puncoz-official/nepali-datepicker-reactjs?logo=travis)](https://travis-ci.org/puncoz-official/nepali-datepicker-reactjs)
-[![Twitter Follow](https://img.shields.io/twitter/follow/PuncozNepal?label=Follow&style=social)](https://twitter.com/PuncozNepal)
 
-## [Demo](https://puncoz-official.github.io/nepali-datepicker-reactjs/)
+## Demo
 
 ![NepaliDatePicker Demo](example.png)
 
 ## Install
 
 ```bash
-npm install --save nepali-datepicker-reactjs
+npm install --save react-nepali-datepicker-bs
 
 or,
 
-yarn add nepali-datepicker-reactjs
+yarn add react-nepali-datepicker-bs
 ```
 
 ## Usage
 
 #### For Typescript
+
 ```tsx
 import React, { useState } from "react"
-import { NepaliDatePicker } from "nepali-datepicker-reactjs"
-import "nepali-datepicker-reactjs/dist/index.css"
+import { NepaliDatePicker } from "react-nepali-datepicker-bs"
+import "react-nepali-datepicker-bs/dist/index.css"
 
 const App = () => {
     const [date, setDate] = useState<string>("")
 
     return (
         <form>
-            <label htmlFor="date">Date</label>
-            <NepaliDatePicker inputClassName="form-control"
-                              className=""
-                              value={date}
-                              onChange={(value: string) => setDate(value)}
-                              options={{ calenderLocale: "ne", valueLocale: "en" }} />
+            <label htmlFor='date'>Date</label>
+            <NepaliDatePicker
+                inputClassName='form-control'
+                className=''
+                value={date}
+                onChange={(value: string) => setDate(value)}
+                options={{ calenderLocale: "ne", valueLocale: "en" }}
+                placeholder={"Enter DOB"}
+                todayIfEmpty={false}
+            />
         </form>
     )
 }
@@ -48,22 +51,27 @@ export default App
 ```
 
 #### For JavaScript
+
 ```jsx
 import React, { useState } from "react"
-import { NepaliDatePicker } from "nepali-datepicker-reactjs"
-import "nepali-datepicker-reactjs/dist/index.css"
+import { NepaliDatePicker } from "react-nepali-datepicker-bs"
+import "react-nepali-datepicker-bs/dist/index.css"
 
 const App = () => {
     const [date, setDate] = useState("")
 
     return (
         <form>
-            <label htmlFor="date">Date</label>
-            <NepaliDatePicker inputClassName="form-control"
-                              className=""
-                              value={date}
-                              onChange={(value) => setDate(value)}
-                              options={{ calenderLocale: "ne", valueLocale: "en" }} />
+            <label htmlFor='date'>Date</label>
+            <NepaliDatePicker
+                inputClassName='form-control'
+                className=''!
+                value={date}
+                onChange={(value) => setDate(value)}
+                options={{ calenderLocale: "ne", valueLocale: "en" }}
+                placeholder={"Enter DOB"}
+                todayIfEmpty={false}
+            />
         </form>
     )
 }
@@ -71,6 +79,6 @@ const App = () => {
 export default App
 ```
 
-## License
+## Reference
 
 MIT © [https://github.com/puncoz-official](https://github.com/puncoz-official)

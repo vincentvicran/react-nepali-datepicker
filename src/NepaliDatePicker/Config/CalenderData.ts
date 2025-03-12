@@ -16,9 +16,14 @@ export const months = {
     ne: ["बैशाख", "जेठ", "असार", "सावन", "भदौ", "असोज", "कार्तिक", "मंसिर", "पौष", "माघ", "फागुन", "चैत"],
 }
 
-export const weeks = {
+export const weeksAbbr = {
     en: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
     ne: ["आईत", "सोम", "मंगल", "बुध", "बिही", "शुक्र", "शनि"],
+}
+
+export const weeks = {
+    en: ["S", "M", "T", "W", "T", "F", "S"],
+    ne: ["आ", "सो", "मं", "बु", "बि", "शु", "श"],
 }
 
 export const maxBSYear = 2100

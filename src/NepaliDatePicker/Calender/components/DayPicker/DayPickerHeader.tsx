@@ -1,9 +1,10 @@
 import React, { FunctionComponent, useMemo } from "react"
 import { CalenderData, useConfig } from "../../../Config"
+import { localeType } from "../../../Types"
 
 const DayPickerHeader: FunctionComponent = () => {
     const { getConfig } = useConfig()
-    const currentLocale: string = useMemo(() => getConfig("currentLocale"), [getConfig])
+    const currentLocale: localeType = useMemo(() => getConfig("currentLocale"), [getConfig])
 
     return (
         <thead>

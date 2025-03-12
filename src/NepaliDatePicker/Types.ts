@@ -1,5 +1,3 @@
-import { HTMLAttributes } from "react"
-
 export type voidFunction = () => void
 
 export const ENGLISH = "en"
@@ -10,9 +8,9 @@ export const AD = "AD"
 export type localeType = "en" | "ne"
 
 export interface NepaliDatePickerOptions {
-    closeOnSelect: boolean
-    calenderLocale: localeType
-    valueLocale: localeType
+    closeOnSelect?: boolean
+    calenderLocale?: localeType
+    valueLocale?: localeType
 }
 
 export interface IContextProviderProps {
@@ -21,32 +19,21 @@ export interface IContextProviderProps {
     maxYear?: number
 }
 export interface INepaliDatePicker {
-    value: string
-    className: HTMLAttributes<HTMLDivElement>["className"]
-    inputClassName: HTMLAttributes<HTMLInputElement>["className"]
+    value?: string
     onChange: (date: string) => void
     onSelect?: (value: string) => void
-    options: NepaliDatePickerOptions
+    options?: NepaliDatePickerOptions
     minYear?: number
     maxYear?: number
     todayIfEmpty?: boolean
+    placeholder?: string
+    style?: React.CSSProperties
+    inputStyle?: React.CSSProperties
+    className?: React.HTMLAttributes<HTMLDivElement>["className"]
+    inputClassName?: React.HTMLAttributes<HTMLInputElement>["className"]
 }
 
-export interface NepaliDatePickerProps {
-    value?: INepaliDatePicker["value"]
-    className?: INepaliDatePicker["className"]
-    inputClassName?: INepaliDatePicker["inputClassName"]
-    onChange?: INepaliDatePicker["onChange"]
-    onSelect?: INepaliDatePicker["onSelect"]
-    options?: {
-        closeOnSelect?: NepaliDatePickerOptions["closeOnSelect"]
-        calenderLocale?: NepaliDatePickerOptions["calenderLocale"]
-        valueLocale?: NepaliDatePickerOptions["valueLocale"]
-    }
-    minYear?: INepaliDatePicker["minYear"]
-    maxYear?: INepaliDatePicker["maxYear"]
-    todayIfEmpty?: boolean
-}
+export interface NepaliDatePickerProps extends INepaliDatePicker {}
 
 export interface NepaliDatepickerEvents {
     change: (value: string) => void
