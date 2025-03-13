@@ -1,4 +1,4 @@
-import { NepaliDatePicker } from "nepali-datepicker-reactjs"
+import { NepaliDatePicker } from "react-nepali-datepicker-bs"
 import React, { FunctionComponent, useState } from "react"
 import "./app.scss"
 import Footer from "./components/Footer"
@@ -9,26 +9,38 @@ const App: FunctionComponent = () => {
     const [dateNepali, setDateNepali] = useState<string>("")
 
     return (
-        <div className="container">
+        <div className='container'>
             <Header />
 
             <form>
-                <div className="row">
-                    <div className="col-md-12">
-                        <div className="row">
-                            <div className="col-md-6 mb-3">
-                                <label htmlFor="start-date">Date <small>Selected: {dateEnglish}</small></label>
-                                <NepaliDatePicker inputClassName="form-control"
-                                                  value={dateEnglish}
-                                                  onChange={(date: string) => setDateEnglish(date)}
-                                                  options={{ calenderLocale: "en" }} />
+                <div className='row'>
+                    <div className='col-md-12'>
+                        <div className='row'>
+                            <div className='col-md-6 mb-3'>
+                                <label htmlFor='start-date'>
+                                    Date <small>Selected: {dateEnglish}</small>
+                                </label>
+                                <NepaliDatePicker
+                                    inputClassName='form-control'
+                                    value={dateEnglish}
+                                    onChange={(date: string) => setDateEnglish(date)}
+                                    options={{ calenderLocale: "en" }}
+                                    placeholder='Select date'
+                                    todayIfEmpty={false}
+                                />
                             </div>
-                            <div className="col-md-6 mb-3">
-                                <label htmlFor="end-date">मिति <small>Selected: {dateNepali}</small></label>
-                                <NepaliDatePicker inputClassName="form-control"
-                                                  value={dateNepali}
-                                                  onChange={(date: string) => setDateNepali(date)}
-                                                  options={{ valueLocale: "en" }} />
+                            <div className='col-md-6 mb-3'>
+                                <label htmlFor='end-date'>
+                                    मिति <small>Selected: {dateNepali}</small>
+                                </label>
+                                <NepaliDatePicker
+                                    inputClassName='form-control'
+                                    value={dateNepali}
+                                    onChange={(date: string) => setDateNepali(date)}
+                                    options={{ valueLocale: "en" }}
+                                    placeholder='Select Date'
+                                    todayIfEmpty={false}
+                                />
                             </div>
                         </div>
                     </div>
