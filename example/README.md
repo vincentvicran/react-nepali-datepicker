@@ -1,3 +1,9 @@
-This example is linked to the nepali-datepicker-reactjs package in the parent directory for development purposes.
+### Symlink to parent development project
 
-You can run `yarn install` and then `yarn start` to test your package.
+-   This example is linked to the react-nepali-datepicker-bs package in the parent directory for development purposes.
+
+You can run follow given steps to link the development package:
+
+1. In the root folder => `yarn install` => `npm link`
+2. In example folder => `yarn install` => `npm link react-nepali-datepicker-bs --save`
+3. If there is any change in development package => `npm link react-nepali-datepicker-bs --save`

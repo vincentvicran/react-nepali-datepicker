@@ -1,5 +1,6 @@
-import { ADToBS } from "bikram-sambat-js"
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
+
+import { ADToBS } from "bikram-sambat-js"
 import { Calender } from "./Calender"
 import { useConfig } from "./Config"
 import { useTrans } from "./Locale"
@@ -30,9 +31,10 @@ const NepaliDatePicker: React.FunctionComponent<INepaliDatePicker> = (props) => 
     const { numberTrans } = useTrans(getConfig<localeType>("currentLocale"))
 
     const toEnglish = useCallback((val: string): string => numberTrans(val, ENGLISH), [])
-    const returnDateValue = useCallback((val: string): string => numberTrans(val, options?.valueLocale), [
-        options?.valueLocale,
-    ])
+    const returnDateValue = useCallback(
+        (val: string): string => numberTrans(val, options?.valueLocale),
+        [options?.valueLocale],
+    )
 
     useEffect(() => {
         setConfig("currentLocale", options?.calenderLocale ?? "ne")
@@ -97,7 +99,7 @@ const NepaliDatePicker: React.FunctionComponent<INepaliDatePicker> = (props) => 
     )
 
     const handleOnDaySelect = useCallback(
-        (selectedDate) => {
+        (selectedDate: any) => {
             executionDelegation(
                 () => {
                     if (options?.closeOnSelect) {

@@ -42,7 +42,7 @@ const DayPickerBody: FunctionComponent<DayPickerBodyProps> = ({ selectedDate, ca
     const { numberTrans } = useTrans(getConfig<localeType>("currentLocale"))
 
     const getDayInfo = useCallback(
-        (weekNum, weekDayNum): DayInfo => {
+        (weekNum: number, weekDayNum: number): DayInfo => {
             let day = weekNum * 7 + weekDayNum - date.firstAdDayInBSMonth.getDay()
             const month = date.bsMonth
             const year = date.bsYear
