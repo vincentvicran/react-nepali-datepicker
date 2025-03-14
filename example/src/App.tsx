@@ -1,5 +1,7 @@
-import { NepaliDatePicker } from "react-nepali-datepicker-bs"
 import React, { FunctionComponent, useState } from "react"
+
+import { NepaliDatePicker } from "react-nepali-datepicker-bs"
+import "react-nepali-datepicker-bs/dist/index.css"
 import "./app.scss"
 import Footer from "./components/Footer"
 import Header from "./components/Header"

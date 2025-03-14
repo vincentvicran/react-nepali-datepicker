@@ -1,10 +1,10 @@
 import { ADToBS } from "bikram-sambat-js"
 import React, { Fragment, FunctionComponent, useCallback, useEffect, useState } from "react"
+import { useConfig } from "../Config"
 import { NepaliDatepickerEvents, ParsedDate, parsedDateInitialValue, SplittedDate } from "../Types"
 import { executionDelegation, parseBSDate, stitchDate } from "../Utils/common"
 import CalenderController from "./components/CalenderController"
 import { DayPicker } from "./components/DayPicker"
-import { useConfig } from "../Config"
 
 interface CalenderProps {
     value: string | null
@@ -128,7 +128,7 @@ const Calender: FunctionComponent<CalenderProps> = ({ value, events }) => {
     }, [])
 
     const onYearSelectHandler = useCallback(
-        (year) => {
+        (year: number) => {
             executionDelegation(
                 () => {
                     setCalenderDate(
@@ -152,7 +152,7 @@ const Calender: FunctionComponent<CalenderProps> = ({ value, events }) => {
     )
 
     const onMonthSelectHandler = useCallback(
-        (month) => {
+        (month: number) => {
             executionDelegation(
                 () => {
                     setCalenderDate(
@@ -167,7 +167,7 @@ const Calender: FunctionComponent<CalenderProps> = ({ value, events }) => {
                 },
                 () => {
                     if (events.monthSelect) {
-                        events.monthSelect(month)
+                        events.monthSelect({ year: calenderDate.bsYear, month })
                     }
                 },
             )

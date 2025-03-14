@@ -7,8 +7,8 @@ export interface IconBaseProps {
     color?: string
 }
 
-const IconBase: FunctionComponent<IconBaseProps> = (props) => {
-    const { size, viewBoxSize, ...options } = props
+const IconBase: FunctionComponent<IconBaseProps & { children: React.ReactNode }> = (props) => {
+    const { size, viewBoxSize, children, ...options } = props
 
     return (
         <svg
@@ -19,7 +19,7 @@ const IconBase: FunctionComponent<IconBaseProps> = (props) => {
             {...options}
             viewBox={`0 0 ${props.viewBoxSize} ${props.viewBoxSize}`}
         >
-            {props.children}
+            {children}
         </svg>
     )
 }
