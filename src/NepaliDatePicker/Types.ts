@@ -13,10 +13,14 @@ export interface NepaliDatePickerOptions {
     valueLocale?: localeType
 }
 
+export type Themes = "dark" | "light" | "forest"
+export type WeekDayLabelSize = "sm" | "md" | "lg"
 export interface IContextProviderProps {
     minYear?: number
     children: React.ReactNode
     maxYear?: number
+    theme?: Themes
+    weekDayLabelSize?: WeekDayLabelSize
 }
 export interface INepaliDatePicker {
     value?: string
@@ -31,6 +35,8 @@ export interface INepaliDatePicker {
     inputStyle?: React.CSSProperties
     className?: React.HTMLAttributes<HTMLDivElement>["className"]
     inputClassName?: React.HTMLAttributes<HTMLInputElement>["className"]
+    theme?: Themes
+    weekDayLabelSize?: WeekDayLabelSize
 }
 
 export interface NepaliDatePickerProps extends INepaliDatePicker {}

@@ -17,6 +17,8 @@ const Calender: FunctionComponent<CalenderProps> = ({ value, events }) => {
     const [calenderDate, setCalenderDate] = useState<ParsedDate>(parsedDateInitialValue)
     const { getConfig } = useConfig()
 
+    const currentTheme = getConfig("theme")
+
     useEffect(() => {
         const parsedDateValue = value ? parseBSDate(value) : null
 
@@ -192,7 +194,7 @@ const Calender: FunctionComponent<CalenderProps> = ({ value, events }) => {
     }, [])
 
     return (
-        <div className='calender'>
+        <div className={`calender ${currentTheme}`}>
             <div className='calendar-wrapper'>
                 {isInitialized && (
                     <Fragment>

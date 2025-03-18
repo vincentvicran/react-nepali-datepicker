@@ -43,7 +43,7 @@ const YearPicker: FunctionComponent<YearPickerProps> = ({ date, onSelect }) => {
     }
 
     return (
-        <div className='control year'>
+        <div className={`control year`}>
             <span className='current-year' onClick={() => setShowDropdown(!showDropdown)}>
                 {currentYear.label}
             </span>

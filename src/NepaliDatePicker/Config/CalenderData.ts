@@ -26,6 +26,11 @@ export const weeks = {
     ne: ["आ", "सो", "मं", "बु", "बि", "शु", "श"],
 }
 
+export const weeksLarge = {
+    en: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    ne: ["आईतबार", "सोमबार", "मंगलबार", "बुधबार", "बिहीबार", "शुक्रबार", "शनिबार"],
+}
+
 export const maxBSYear = 2100
 export const minBSYear = 1970
 

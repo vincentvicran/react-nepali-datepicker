@@ -29,6 +29,8 @@ const App: FunctionComponent = () => {
                                     options={{ calenderLocale: "en" }}
                                     placeholder='Select date'
                                     todayIfEmpty={false}
+                                    weekDayLabelSize='md'
+                                    theme='forest'
                                 />
                             </div>
                             <div className='col-md-6 mb-3'>
@@ -42,6 +44,8 @@ const App: FunctionComponent = () => {
                                     options={{ valueLocale: "en" }}
                                     placeholder='Select Date'
                                     todayIfEmpty={false}
+                                    weekDayLabelSize='md'
+                                    theme='light'
                                 />
                             </div>
                         </div>

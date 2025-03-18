@@ -36,7 +36,7 @@ const MonthPicker: FunctionComponent<MonthPickerProps> = ({ date, onSelect }) =>
     }
 
     return (
-        <div className='control month'>
+        <div className={`control month`}>
             <span className='current-month' onClick={() => setShowDropdown(!showDropdown)}>
                 {currentMonth.label}
             </span>
