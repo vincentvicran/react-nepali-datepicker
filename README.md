@@ -7,7 +7,17 @@
 
 ## Demo
 
+### Theme: "light" (default)
+
 ![NepaliDatePicker Demo](example.png)
+
+### Theme: "dark"
+
+![NepaliDatePicker Demo](example-dark.png)
+
+### Theme: "forest"
+
+![NepaliDatePicker Demo](example-forest.png)
 
 ## Install
 
@@ -36,12 +46,16 @@ const App = () => {
             <label htmlFor='date'>Date</label>
             <NepaliDatePicker
                 inputClassName='form-control'
-                className=''
-                value={date}
-                onChange={(value: string) => setDate(value)}
-                options={{ calenderLocale: "ne", valueLocale: "en" }}
-                placeholder={"Enter DOB"}
+                value={dateEnglish}
+                onChange={(date: string) => setDateEnglish(date)}
+                options={{ calenderLocale: "en" }}
+                placeholder='Select date'
+                // true if you want to enable the input date to be current date by default
                 todayIfEmpty={false}
+                // size for the week day label in the calendar popover
+                weekDayLabelSize='md'
+                // available themes = 'light' | 'dark' | 'forest'
+                theme='dark'
             />
         </form>
     )
@@ -65,12 +79,13 @@ const App = () => {
             <label htmlFor='date'>Date</label>
             <NepaliDatePicker
                 inputClassName='form-control'
-                className=''!
-                value={date}
-                onChange={(value) => setDate(value)}
-                options={{ calenderLocale: "ne", valueLocale: "en" }}
-                placeholder={"Enter DOB"}
+                value={dateNepali}
+                onChange={(date: string) => setDateNepali(date)}
+                options={{ valueLocale: "en" }}
+                placeholder='Select Date'
                 todayIfEmpty={false}
+                weekDayLabelSize='md'
+                theme='light'
             />
         </form>
     )
