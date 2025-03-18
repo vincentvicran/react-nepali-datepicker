@@ -30,7 +30,7 @@ const App: FunctionComponent = () => {
                                     placeholder='Select date'
                                     todayIfEmpty={false}
                                     weekDayLabelSize='md'
-                                    theme='forest'
+                                    theme='dark'
                                 />
                             </div>
                             <div className='col-md-6 mb-3'>
