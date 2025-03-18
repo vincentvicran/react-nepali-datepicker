@@ -8,7 +8,6 @@ $text-disabled: #d8d8d8;
 
     .calender {
         background: $secondary none repeat scroll 0 0;
-        // border: 1px solid darken($secondary, 20%);
         border-radius: 6px;
         box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1);
         box-sizing: border-box;
@@ -52,9 +51,10 @@ $text-disabled: #d8d8d8;
                 &.year {
                     border: 1px solid #eee;
                     line-height: 24px;
-                    width: 70px;
+                    width: 90px;
 
-                    .current-month, .current-year {
+                    .current-month,
+                    .current-year {
                         display: block;
                         padding: 4px;
                     }
@@ -89,6 +89,11 @@ $text-disabled: #d8d8d8;
                             color: #fff;
                         }
                     }
+
+                    &.dark,
+                    &.forest {
+                        background-color: #333;
+                    }
                 }
             }
         }
@@ -98,12 +103,18 @@ $text-disabled: #d8d8d8;
                 opacity: 1;
             }
 
-            &.disabled {
+            &.disabled-light {
                 color: $text-disabled;
+            }
+            &.disabled-dark {
+                color: #757575;
+            }
+            &.disabled-forest {
+                color: #7d8471;
             }
 
             &.today {
-                color: #4a4a4a;
+                color: $primary;
                 position: relative;
 
                 &::before {
@@ -155,5 +166,19 @@ $text-disabled: #d8d8d8;
                 height: 36px;
             }
         }
+    }
+
+    .dark {
+        background-color: #121212;
+        color: #ffffff;
+    }
+
+    .light {
+        background: $secondary none repeat scroll 0 0;
+        color: $textColor;
+    }
+    .forest {
+        background-color: #2a2d28;
+        color: #d5d8c1;
     }
 }

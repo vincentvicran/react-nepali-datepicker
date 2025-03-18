@@ -28,6 +28,7 @@ const NepaliDatePicker: React.FunctionComponent<INepaliDatePicker> = (props) => 
     const [showCalendar, setShowCalendar] = useState<boolean>(false)
 
     const { setConfig, getConfig } = useConfig()
+
     const { numberTrans } = useTrans(getConfig<localeType>("currentLocale"))
 
     const toEnglish = useCallback((val: string): string => numberTrans(val, ENGLISH), [])

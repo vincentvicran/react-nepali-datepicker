@@ -16,20 +16,15 @@ const NepaliDatePickerWrapper: FunctionComponent<NepaliDatePickerProps> = (props
     )
 
     return (
-        <ConfigProvider maxYear={props.maxYear} minYear={props.minYear}>
+        <ConfigProvider
+            maxYear={props.maxYear}
+            minYear={props.minYear}
+            theme={props.theme}
+            weekDayLabelSize={props.weekDayLabelSize}
+        >
             <NepaliDatePicker {...({ ...props, options: calenderOptions } as INepaliDatePicker)} />
         </ConfigProvider>
     )
-}
-
-NepaliDatePickerWrapper.defaultProps = {
-    className: "",
-    inputClassName: "",
-    value: "",
-    onChange: () => null,
-    onSelect: () => null,
-    options: {},
-    todayIfEmpty: false,
 }
 
 export default NepaliDatePickerWrapper

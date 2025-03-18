@@ -1,5 +1,7 @@
-import React, { FunctionComponent, useLayoutEffect } from "react"
+import React, { FunctionComponent } from "react"
 import { OptionType } from "./Types"
+import { useConfig } from "../Config"
+import { Themes } from "../Types"
 
 interface DropDownProps {
     options: OptionType[]
@@ -8,15 +10,13 @@ interface DropDownProps {
 }
 
 const DropDown: FunctionComponent<DropDownProps> = ({ options, value, onSelect }) => {
-    useLayoutEffect(() => {
-        // const elem = document.querySelector(".active")
-        // if (elem) {
-        //     elem.scrollIntoView()
-        // }
-    })
+    const { getConfig } = useConfig()
+
+    const currentTheme = getConfig<Themes>("theme")
+
     return (
         <div className='drop-down'>
-            <div className='option-wrapper'>
+            <div className={`option-wrapper ${currentTheme}`}>
                 <ul>
                     {options.map((option, index) => (
                         <li

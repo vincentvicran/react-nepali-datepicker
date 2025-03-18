@@ -1,15 +1,22 @@
 import React, { FunctionComponent, useMemo } from "react"
 import { CalenderData, useConfig } from "../../../Config"
-import { localeType } from "../../../Types"
+import { localeType, WeekDayLabelSize } from "../../../Types"
 
 const DayPickerHeader: FunctionComponent = () => {
     const { getConfig } = useConfig()
     const currentLocale: localeType = useMemo(() => getConfig("currentLocale"), [getConfig])
 
+    const currentWeeksVal =
+        getConfig<WeekDayLabelSize>("weekDayLabelSize") === "md"
+            ? CalenderData.weeksAbbr[currentLocale]
+            : getConfig<WeekDayLabelSize>("weekDayLabelSize") === "sm"
+            ? CalenderData.weeks[currentLocale]
+            : CalenderData.weeksLarge[currentLocale]
+
     return (
         <thead>
             <tr>
-                {CalenderData.weeks[currentLocale].map((weekDay: string, index: number) => (
+                {currentWeeksVal.map((weekDay: string, index: number) => (
                     <td key={index}>{weekDay}</td>
                 ))}
             </tr>
