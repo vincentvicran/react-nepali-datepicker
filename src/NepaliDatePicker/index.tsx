@@ -1,10 +1,10 @@
-import React, { FunctionComponent, useMemo } from "react"
+import React, { useMemo } from "react"
 import "../NepaliDatePicker.scss"
 import { ConfigProvider } from "./Config"
 import NepaliDatePicker from "./NepaliDatePicker"
-import { ENGLISH, INepaliDatePicker, NEPALI, NepaliDatePickerProps } from "./Types"
+import { ENGLISH, NEPALI, TDateSeparator, TNepaliDatePicker } from "./Types"
 
-const NepaliDatePickerWrapper: FunctionComponent<NepaliDatePickerProps> = (props) => {
+const NepaliDatePickerWrapper = <GDateSeparator extends TDateSeparator>(props: TNepaliDatePicker<GDateSeparator>) => {
     const calenderOptions = useMemo(
         () => ({
             closeOnSelect: true,
@@ -22,9 +22,23 @@ const NepaliDatePickerWrapper: FunctionComponent<NepaliDatePickerProps> = (props
             theme={props.theme}
             weekDayLabelSize={props.weekDayLabelSize}
         >
-            <NepaliDatePicker {...({ ...props, options: calenderOptions } as INepaliDatePicker)} />
+            <NepaliDatePicker
+                {...{
+                    ...props,
+                    options: calenderOptions,
+                    formatOptions: {
+                        separator: "-",
+                        format: "YYYY-MM-DD",
+                        ...props.formatOptions,
+                    },
+                }}
+            />
         </ConfigProvider>
     )
 }
+
+export * from "bikram-sambat-js"
+export * from "./Types"
+export * from "./Utils"
 
 export default NepaliDatePickerWrapper

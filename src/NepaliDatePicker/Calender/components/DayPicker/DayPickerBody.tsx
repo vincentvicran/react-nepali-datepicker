@@ -2,7 +2,7 @@ import { ADToBS } from "bikram-sambat-js"
 import React, { FunctionComponent, useCallback, useMemo } from "react"
 import { CalenderData, useConfig } from "../../../Config"
 import { useTrans } from "../../../Locale"
-import { localeType, ParsedDate, SplittedDate, Themes } from "../../../Types"
+import { ParsedDate, SplittedDate, Themes, TLocaleType } from "../../../Types"
 import { getNumberOfDaysInBSMonth, range, splitDate } from "../../../Utils/common"
 
 interface DayPickerBodyProps {
@@ -39,7 +39,7 @@ const DayPickerBody: FunctionComponent<DayPickerBodyProps> = ({ selectedDate, ca
     )
 
     const { getConfig } = useConfig()
-    const { numberTrans } = useTrans(getConfig<localeType>("currentLocale"))
+    const { numberTrans } = useTrans(getConfig<TLocaleType>("currentLocale"))
 
     const currentTheme = getConfig<Themes>("theme")
 

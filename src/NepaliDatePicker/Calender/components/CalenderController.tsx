@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react"
 import { useConfig } from "../../Config"
 import { NextIcon, PreviousIcon, TodayIcon } from "../../Icons"
 import { useTrans } from "../../Locale"
-import { localeType, ParsedDate } from "../../Types"
+import { ParsedDate, TLocaleType } from "../../Types"
 import MonthPicker from "./MonthPicker"
 import YearPicker from "./YearPicker"
 
@@ -18,7 +18,7 @@ interface CalenderControllerProps {
 const CalenderController: FunctionComponent<CalenderControllerProps> = (props) => {
     const { onNextMonth, onPreviousMonth, calenderDate, onToday, onYearSelect, onMonthSelect } = props
     const { getConfig } = useConfig()
-    const { trans } = useTrans(getConfig<localeType>("currentLocale"))
+    const { trans } = useTrans(getConfig<TLocaleType>("currentLocale"))
 
     return (
         <div className='calendar-controller'>

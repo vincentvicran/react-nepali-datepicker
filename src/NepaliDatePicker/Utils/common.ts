@@ -1,14 +1,25 @@
-import { BSToAD } from "bikram-sambat-js"
+import { ADToBS, BSToAD } from "bikram-sambat-js"
 import { CalenderData } from "../Config"
-import { BS, ParsedDate, SplittedDate, voidFunction } from "../Types"
+import { BS, ParsedDate, SplittedDate, TDateFormatOptions, TDateSeparator, voidFunction } from "../Types"
 import {
+    giveValidAdDay,
+    giveValidAdMonth,
+    giveValidAdYear,
     validateAdDay,
     validateAdMonth,
     validateAdYear,
     validateBsDay,
     validateBsMonth,
     validateBsYear,
+    validatedBsDay,
+    validatedBsMonth,
+    validatedBsYear,
 } from "./DateValidations"
+
+export const defaultFormatOptions: TDateFormatOptions<TDateSeparator> = {
+    separator: "-",
+    format: "YYYY-MM-DD",
+}
 
 export const range = (start: number, end: number, step: number = 1): number[] => {
     const list = []
@@ -23,7 +34,7 @@ export const range = (start: number, end: number, step: number = 1): number[] =>
 export const zeroPad = (num: number): string => `${num > 9 ? num : "0" + num}`
 
 export const executionDelegation = (execution: voidFunction, delegatedExecution: voidFunction) => {
-    new Promise((resolve) => {
+    new Promise<void>((resolve) => {
         execution()
         resolve()
     }).then(() => {
@@ -31,8 +42,22 @@ export const executionDelegation = (execution: voidFunction, delegatedExecution:
     })
 }
 
-export const splitDate = (date: string, separator: string = "-"): SplittedDate => {
-    const [year, month, day] = date.split(separator)
+export const splitDate = (
+    date: string,
+    { separator, format }: TDateFormatOptions<TDateSeparator> = defaultFormatOptions,
+): SplittedDate => {
+    const parts = date.split(separator)
+    let year: string, month: string, day: string
+
+    if (format === `YYYY${separator}MM${separator}DD`) {
+        ;[year, month, day] = parts
+    } else if (format === `DD${separator}MM${separator}YYYY`) {
+        ;[day, month, year] = parts
+    } else if (format === `MM${separator}DD${separator}YYYY`) {
+        ;[month, day, year] = parts
+    } else {
+        throw new Error(`Unsupported date format: ${format}`)
+    }
 
     return {
         day: parseInt(day, 10),
@@ -41,8 +66,21 @@ export const splitDate = (date: string, separator: string = "-"): SplittedDate =
     }
 }
 
-export const stitchDate = (date: SplittedDate, separator: string = "-"): string => {
-    return `${date.year}${separator}${zeroPad(date.month)}${separator}${zeroPad(date.day)}`
+export const stitchDate = (
+    date: SplittedDate,
+    { separator, format }: TDateFormatOptions<TDateSeparator> = defaultFormatOptions,
+): string => {
+    let returnDate: string = `${date.year}${separator}${zeroPad(date.month)}${separator}${zeroPad(date.day)}`
+    if (format === `YYYY${separator}MM${separator}DD`) {
+        returnDate = `${date.year}${separator}${zeroPad(date.month)}${separator}${zeroPad(date.day)}`
+    } else if (format === `DD${separator}MM${separator}YYYY`) {
+        returnDate = `${zeroPad(date.day)}${separator}${zeroPad(date.month)}${separator}${date.year}`
+    } else if (format === `MM${separator}DD${separator}YYYY`) {
+        returnDate = `${zeroPad(date.day)}${separator}${zeroPad(date.month)}${separator}${date.year}`
+    } else {
+        throw new Error(`Unsupported date format: ${format}`)
+    }
+    return returnDate
 }
 
 export const validateDateObject = (date: SplittedDate, type: string = BS) => {
@@ -59,6 +97,31 @@ export const validateDateObject = (date: SplittedDate, type: string = BS) => {
     validateAdYear(year)
     validateAdMonth(month)
     validateAdDay(day)
+}
+
+export const giveValidDateObject = (date: SplittedDate, type: string = BS): SplittedDate => {
+    const today = parseBSDate(ADToBS(new Date()))
+
+    const splittedDate = splitDate(today.adDate.toString())
+    const { year, month, day } = date
+
+    const validBufferYear = isNaN(year) ? splittedDate.year : year
+    const validBufferMonth = isNaN(month) ? splittedDate.month : month
+    const validBufferDay = isNaN(day) ? splittedDate.day : day
+
+    if (type === BS) {
+        return {
+            year: validatedBsYear(validBufferYear),
+            month: validatedBsMonth(validBufferMonth),
+            day: validatedBsDay(validBufferDay),
+        }
+    }
+
+    return {
+        year: giveValidAdYear(validBufferYear),
+        month: giveValidAdMonth(validBufferMonth),
+        day: giveValidAdDay(validBufferDay),
+    }
 }
 
 export const getNumberOfDaysInBSMonth = (yearMonth: { year: number; month: number }): number => {
@@ -105,13 +168,16 @@ export const getNumberOfDaysInBSMonth = (yearMonth: { year: number; month: numbe
     }, 0)
 }
 
-export const parseBSDate = (date: string, separator: string = "-"): ParsedDate => {
-    const { year, month, day }: SplittedDate = splitDate(date, separator)
+export const parseBSDate = (
+    date: string,
+    formatOptions: TDateFormatOptions<TDateSeparator> = defaultFormatOptions,
+): ParsedDate => {
+    const { year, month, day }: SplittedDate = splitDate(date, formatOptions)
 
     validateDateObject({ year, month, day })
 
     const adDate = new Date(BSToAD(date))
-    const firstAdDateInBSMonth = new Date(BSToAD(stitchDate({ year, month, day: 1 }, separator)))
+    const firstAdDateInBSMonth = new Date(BSToAD(stitchDate({ year, month, day: 1 }, formatOptions)))
     const numberOfDaysInMonth = getNumberOfDaysInBSMonth({ year, month })
 
     return {

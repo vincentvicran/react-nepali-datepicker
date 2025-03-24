@@ -1,16 +1,16 @@
 export type voidFunction = () => void
 
-export const ENGLISH = "en"
-export const NEPALI = "ne"
+export const ENGLISH: TLocaleType = "en"
+export const NEPALI: TLocaleType = "ne"
 export const BS = "BS"
 export const AD = "AD"
 
-export type localeType = "en" | "ne"
+export type TLocaleType = "en" | "ne"
 
 export interface NepaliDatePickerOptions {
     closeOnSelect?: boolean
-    calenderLocale?: localeType
-    valueLocale?: localeType
+    calenderLocale?: TLocaleType
+    valueLocale?: TLocaleType
 }
 
 export type Themes = "dark" | "light" | "forest"
@@ -22,7 +22,34 @@ export interface IContextProviderProps {
     theme?: Themes
     weekDayLabelSize?: WeekDayLabelSize
 }
-export interface INepaliDatePicker {
+export type TDateSeparatorDash = "-"
+export type TDateSeparatorSlash = "/"
+export type TDateSeparatorDot = "."
+
+export type TDateFormatDash = "YYYY-MM-DD" | "DD-MM-YYYY" | "MM-DD-YYYY"
+export type TDateFormatSlash = "YYYY/MM/DD" | "DD/MM/YYYY" | "MM/DD/YYYY"
+export type TDateFormatDot = "YYYY.MM.DD" | "DD.MM.YYYY" | "MM.DD.YYYY"
+
+export type TDateSeparator = TDateSeparatorDash | TDateSeparatorSlash | TDateSeparatorDot
+
+export type TDateFormatOptions<GDateSeparator extends TDateSeparator> = GDateSeparator extends TDateSeparatorDash
+    ? {
+          separator: GDateSeparator
+          format: TDateFormatDash
+      }
+    : GDateSeparator extends TDateSeparatorSlash
+    ? {
+          separator: GDateSeparator
+          format: TDateFormatSlash
+      }
+    : GDateSeparator extends TDateSeparatorDot
+    ? {
+          separator: GDateSeparator
+          format: TDateFormatDot
+      }
+    : never
+
+export type TNepaliDatePicker<GDateSeparator extends TDateSeparator> = {
     value?: string
     onChange: (date: string) => void
     onSelect?: (value: string) => void
@@ -37,9 +64,8 @@ export interface INepaliDatePicker {
     inputClassName?: React.HTMLAttributes<HTMLInputElement>["className"]
     theme?: Themes
     weekDayLabelSize?: WeekDayLabelSize
+    formatOptions?: TDateFormatOptions<GDateSeparator extends TDateSeparator ? GDateSeparator : never>
 }
-
-export interface NepaliDatePickerProps extends INepaliDatePicker {}
 
 export interface NepaliDatepickerEvents {
     change: (value: string) => void

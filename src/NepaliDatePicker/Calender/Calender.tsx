@@ -1,17 +1,25 @@
 import { ADToBS } from "bikram-sambat-js"
 import React, { Fragment, FunctionComponent, useCallback, useEffect, useState } from "react"
 import { useConfig } from "../Config"
-import { NepaliDatepickerEvents, ParsedDate, parsedDateInitialValue, SplittedDate } from "../Types"
+import {
+    NepaliDatepickerEvents,
+    ParsedDate,
+    parsedDateInitialValue,
+    SplittedDate,
+    TDateFormatOptions,
+    TDateSeparator,
+} from "../Types"
 import { executionDelegation, parseBSDate, stitchDate } from "../Utils/common"
 import CalenderController from "./components/CalenderController"
 import { DayPicker } from "./components/DayPicker"
 
-interface CalenderProps {
+interface ICalenderProps {
     value: string | null
     events: NepaliDatepickerEvents
+    formatOptions?: TDateFormatOptions<TDateSeparator>
 }
 
-const Calender: FunctionComponent<CalenderProps> = ({ value, events }) => {
+const Calender: FunctionComponent<ICalenderProps> = ({ value, events, formatOptions }) => {
     const [isInitialized, setIsInitialized] = useState<boolean>(false)
     const [selectedDate, setSelectedDate] = useState<ParsedDate | null>(null)
     const [calenderDate, setCalenderDate] = useState<ParsedDate>(parsedDateInitialValue)
@@ -32,19 +40,22 @@ const Calender: FunctionComponent<CalenderProps> = ({ value, events }) => {
             setSelectedDate(null)
         }
         setIsInitialized(true)
-    }, [value])
+    }, [])
 
     useEffect(() => {
         if (isInitialized && selectedDate) {
             events.change(
-                stitchDate({
-                    year: selectedDate.bsYear,
-                    month: selectedDate.bsMonth,
-                    day: selectedDate.bsDay,
-                }),
+                stitchDate(
+                    {
+                        year: selectedDate.bsYear,
+                        month: selectedDate.bsMonth,
+                        day: selectedDate.bsDay,
+                    },
+                    formatOptions,
+                ),
             )
         }
-    }, [selectedDate, isInitialized])
+    }, [selectedDate, formatOptions, isInitialized])
 
     const onPreviousMonthHandler = useCallback(() => {
         executionDelegation(
@@ -68,7 +79,7 @@ const Calender: FunctionComponent<CalenderProps> = ({ value, events }) => {
                                 month,
                                 year,
                             },
-                            "-",
+                            formatOptions,
                         ),
                     )
                 })
@@ -79,7 +90,7 @@ const Calender: FunctionComponent<CalenderProps> = ({ value, events }) => {
                 }
             },
         )
-    }, [])
+    }, [formatOptions])
 
     const onNextMonthClickHandler = useCallback(() => {
         executionDelegation(
@@ -100,7 +111,7 @@ const Calender: FunctionComponent<CalenderProps> = ({ value, events }) => {
                                 month,
                                 year,
                             },
-                            "-",
+                            formatOptions,
                         ),
                     )
                 })
@@ -111,7 +122,7 @@ const Calender: FunctionComponent<CalenderProps> = ({ value, events }) => {
                 }
             },
         )
-    }, [])
+    }, [formatOptions])
 
     const onTodayClickHandler = useCallback(() => {
         const today = parseBSDate(ADToBS(new Date()))
