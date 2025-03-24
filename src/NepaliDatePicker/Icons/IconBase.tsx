@@ -8,26 +8,21 @@ export interface IconBaseProps {
 }
 
 const IconBase: FunctionComponent<IconBaseProps & { children: React.ReactNode }> = (props) => {
-    const { size, viewBoxSize, children, ...options } = props
+    const { size = 16, viewBoxSize = 24, color = "#6b6b6b", children, ...options } = props
 
     return (
         <svg
             xmlns='http://www.w3.org/2000/svg'
             xmlnsXlink='http://www.w3.org/1999/xlink'
-            width={props.size}
-            height={props.size}
+            width={size}
+            height={size}
+            color={color}
             {...options}
-            viewBox={`0 0 ${props.viewBoxSize} ${props.viewBoxSize}`}
+            viewBox={`0 0 ${viewBoxSize} ${viewBoxSize}`}
         >
             {children}
         </svg>
     )
-}
-
-IconBase.defaultProps = {
-    color: "#6b6b6b",
-    size: "16",
-    viewBoxSize: "24",
 }
 
 export default IconBase

@@ -330,7 +330,7 @@ picocolors@^1.0.0, picocolors@^1.1.1:
     scheduler "^0.23.2"
 
 "react-nepali-datepicker-bs@file:..":
-  version "2.1.0"
+  version "2.2.0"
   resolved "file:.."
   dependencies:
     bikram-sambat-js "^1.0.2"

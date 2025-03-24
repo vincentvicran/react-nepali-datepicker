@@ -6,6 +6,26 @@ $text-disabled: #d8d8d8;
 .nepali-date-picker {
     position: relative;
 
+    & .date-part-container {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 0.25rem;
+
+        & .date-part-input {
+            background: none !important;
+            border: none !important;
+            outline: none !important;
+            text-decoration: none !important;
+        }
+
+        // & .date-part-separator {
+        //     // padding: 0 0.25rem;
+        // }
+    }
+
     .calender {
         background: $secondary none repeat scroll 0 0;
         border-radius: 6px;
@@ -23,6 +43,7 @@ $text-disabled: #d8d8d8;
         padding: 15px;
         position: absolute;
         text-align: right;
+        -webkit-user-select: none;
         user-select: none;
         left: 0;
         z-index: 9999;

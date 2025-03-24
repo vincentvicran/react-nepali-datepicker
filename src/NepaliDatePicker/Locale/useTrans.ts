@@ -1,10 +1,10 @@
 import { englishToNepaliNumber, nepaliToEnglishNumber } from "nepali-number"
-import { ENGLISH, localeType } from "../Types"
+import { ENGLISH, TLocaleType } from "../Types"
 import translations from "./translations"
 
-const useTrans = (currentLocale: localeType) => {
+const useTrans = (currentLocale: TLocaleType) => {
     return {
-        trans: (key: string, locale?: localeType) => {
+        trans: (key: string, locale?: TLocaleType) => {
             // eslint-disable-next-line no-prototype-builtins
             if (!translations.hasOwnProperty(key)) {
                 return key
@@ -14,7 +14,7 @@ const useTrans = (currentLocale: localeType) => {
             return translations[key][locale || currentLocale]
         },
 
-        numberTrans: (num: number | string, locale?: localeType) => {
+        numberTrans: (num: number | string, locale?: TLocaleType) => {
             return `${locale || currentLocale}` === ENGLISH
                 ? nepaliToEnglishNumber(num as string)
                 : englishToNepaliNumber(num)
