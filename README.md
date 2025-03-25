@@ -39,7 +39,7 @@ import { NepaliDatePicker } from "react-nepali-datepicker-bs"
 import "react-nepali-datepicker-bs/dist/index.css"
 
 const App = () => {
-    const [date, setDate] = useState<string>("")
+    const [dateEnglish, setDateEnglish] = useState<string>("")
 
     return (
         <form>
@@ -56,6 +56,10 @@ const App = () => {
                 weekDayLabelSize='md'
                 // available themes = 'light' | 'dark' | 'forest'
                 theme='dark'
+                formatOptions={{
+                    separator: "-",
+                    format: "YYYY-MM-DD",
+                }}
             />
         </form>
     )
@@ -72,7 +76,7 @@ import { NepaliDatePicker } from "react-nepali-datepicker-bs"
 import "react-nepali-datepicker-bs/dist/index.css"
 
 const App = () => {
-    const [date, setDate] = useState("")
+    const [dateNepali, setDateNepali] = useState("")
 
     return (
         <form>
