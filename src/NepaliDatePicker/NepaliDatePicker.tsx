@@ -43,7 +43,7 @@ const NepaliDatePicker = <GDateSeparator extends TDateSeparator>(props: TNepaliD
     }, [options?.calenderLocale])
 
     useEffect(() => {
-        setDate(toEnglish(value || (todayIfEmpty ? ADToBS(new Date()) : "")))
+        setDate(returnDateValue(value || (todayIfEmpty ? ADToBS(new Date()) : "")))
     }, [value])
 
     const handleClickOutside = useCallback((event: any) => {
@@ -209,7 +209,7 @@ const NepaliDatePicker = <GDateSeparator extends TDateSeparator>(props: TNepaliD
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setShowCalendar(false)
-        const newValue = e.target.value
+        const newValue = toEnglish(e.target.value)
 
         // Remove unwanted characters (anything that isn't a digit or the separator)
         const sanitized = newValue.replace(new RegExp(`[^0-9${formatOptions?.separator}]`, "g"), "")
@@ -220,6 +220,8 @@ const NepaliDatePicker = <GDateSeparator extends TDateSeparator>(props: TNepaliD
         // Only format if we have digits
         if (digitCount > 0) {
             let formatted = formatDateString(sanitized)
+
+            formatted = options?.valueLocale === "en" ? toEnglish(formatted) : formatted
 
             setDate(formatted)
 
