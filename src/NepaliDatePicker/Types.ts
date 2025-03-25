@@ -1,3 +1,5 @@
+import { ConfigState } from "./Config/ConfigTypes"
+
 export type voidFunction = () => void
 
 export const ENGLISH: TLocaleType = "en"
@@ -15,13 +17,10 @@ export interface NepaliDatePickerOptions {
 
 export type Themes = "dark" | "light" | "forest"
 export type WeekDayLabelSize = "sm" | "md" | "lg"
-export interface IContextProviderProps {
-    minYear?: number
+export interface IContextProviderProps extends ConfigState {
     children: React.ReactNode
-    maxYear?: number
-    theme?: Themes
-    weekDayLabelSize?: WeekDayLabelSize
 }
+
 export type TDateSeparatorDash = "-"
 export type TDateSeparatorSlash = "/"
 export type TDateSeparatorDot = "."

@@ -26,11 +26,15 @@ const App: FunctionComponent = () => {
                                     inputClassName='form-control'
                                     value={dateEnglish}
                                     onChange={(date: string) => setDateEnglish(date)}
-                                    options={{ calenderLocale: "en" }}
+                                    options={{ calenderLocale: "en", valueLocale: "en" }}
                                     placeholder='Select date'
                                     todayIfEmpty={false}
                                     weekDayLabelSize='md'
                                     theme='dark'
+                                    formatOptions={{
+                                        separator: ".",
+                                        format: "YYYY.MM.DD",
+                                    }}
                                 />
                             </div>
                             <div className='col-md-6 mb-3'>

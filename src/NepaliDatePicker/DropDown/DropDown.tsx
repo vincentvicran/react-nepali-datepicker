@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from "react"
-import { OptionType } from "./Types"
 import { useConfig } from "../Config"
-import { Themes } from "../Types"
+import { OptionType } from "./Types"
 
 interface DropDownProps {
     options: OptionType[]
@@ -12,7 +11,7 @@ interface DropDownProps {
 const DropDown: FunctionComponent<DropDownProps> = ({ options, value, onSelect }) => {
     const { getConfig } = useConfig()
 
-    const currentTheme = getConfig<Themes>("theme")
+    const currentTheme = getConfig("theme")
 
     return (
         <div className='drop-down'>

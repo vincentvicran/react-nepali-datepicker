@@ -1,4 +1,4 @@
-import { TLocaleType, Themes, WeekDayLabelSize } from "../Types"
+import { TDateFormatOptions, TDateSeparator, TLocaleType, Themes, WeekDayLabelSize } from "../Types"
 
 export const SET_CONFIG: string = "set_config"
 
@@ -8,6 +8,7 @@ export interface ConfigState {
     maxYear: number
     theme?: Themes
     weekDayLabelSize?: WeekDayLabelSize
+    formatOptions?: TDateFormatOptions<TDateSeparator>
 }
 
 export type ConfigValue = TLocaleType

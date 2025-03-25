@@ -9,7 +9,7 @@ import {
     TDateFormatOptions,
     TDateSeparator,
 } from "../Types"
-import { executionDelegation, parseBSDate, stitchDate } from "../Utils/common"
+import { defaultFormatOptions, executionDelegation, parseBSDate, stitchDate } from "../Utils/common"
 import CalenderController from "./components/CalenderController"
 import { DayPicker } from "./components/DayPicker"
 
@@ -19,7 +19,7 @@ interface ICalenderProps {
     formatOptions?: TDateFormatOptions<TDateSeparator>
 }
 
-const Calender: FunctionComponent<ICalenderProps> = ({ value, events, formatOptions }) => {
+const Calender: FunctionComponent<ICalenderProps> = ({ value, events, formatOptions = defaultFormatOptions }) => {
     const [isInitialized, setIsInitialized] = useState<boolean>(false)
     const [selectedDate, setSelectedDate] = useState<ParsedDate | null>(null)
     const [calenderDate, setCalenderDate] = useState<ParsedDate>(parsedDateInitialValue)
@@ -28,14 +28,14 @@ const Calender: FunctionComponent<ICalenderProps> = ({ value, events, formatOpti
     const currentTheme = getConfig("theme")
 
     useEffect(() => {
-        const parsedDateValue = value ? parseBSDate(value) : null
+        const parsedDateValue = value ? parseBSDate(value, formatOptions) : null
 
         if (parsedDateValue) {
             setSelectedDate(parsedDateValue)
             setCalenderDate(parsedDateValue)
         } else {
             // Set to current date if no valid value is provided
-            const today = parseBSDate(ADToBS(new Date()))
+            const today = parseBSDate(ADToBS(new Date()), formatOptions)
             setCalenderDate(today)
             setSelectedDate(null)
         }
@@ -68,7 +68,7 @@ const Calender: FunctionComponent<ICalenderProps> = ({ value, events, formatOpti
                         month = 12
                         year--
                     }
-                    if (year < getConfig<number>("minYear") || year > getConfig<number>("maxYear")) {
+                    if (year < (getConfig("minYear") ?? 0) || year > (getConfig("maxYear") ?? 0)) {
                         return date
                     }
 
@@ -81,6 +81,7 @@ const Calender: FunctionComponent<ICalenderProps> = ({ value, events, formatOpti
                             },
                             formatOptions,
                         ),
+                        formatOptions,
                     )
                 })
             },
@@ -113,6 +114,7 @@ const Calender: FunctionComponent<ICalenderProps> = ({ value, events, formatOpti
                             },
                             formatOptions,
                         ),
+                        formatOptions,
                     )
                 })
             },
@@ -125,7 +127,7 @@ const Calender: FunctionComponent<ICalenderProps> = ({ value, events, formatOpti
     }, [formatOptions])
 
     const onTodayClickHandler = useCallback(() => {
-        const today = parseBSDate(ADToBS(new Date()))
+        const today = parseBSDate(ADToBS(new Date()), formatOptions)
 
         executionDelegation(
             () => {
@@ -138,7 +140,7 @@ const Calender: FunctionComponent<ICalenderProps> = ({ value, events, formatOpti
                 }
             },
         )
-    }, [])
+    }, [formatOptions])
 
     const onYearSelectHandler = useCallback(
         (year: number) => {
@@ -146,11 +148,15 @@ const Calender: FunctionComponent<ICalenderProps> = ({ value, events, formatOpti
                 () => {
                     setCalenderDate(
                         parseBSDate(
-                            stitchDate({
-                                year,
-                                month: calenderDate.bsMonth,
-                                day: calenderDate.bsDay,
-                            }),
+                            stitchDate(
+                                {
+                                    year,
+                                    month: calenderDate.bsMonth,
+                                    day: calenderDate.bsDay,
+                                },
+                                formatOptions,
+                            ),
+                            formatOptions,
                         ),
                     )
                 },
@@ -161,7 +167,7 @@ const Calender: FunctionComponent<ICalenderProps> = ({ value, events, formatOpti
                 },
             )
         },
-        [calenderDate],
+        [calenderDate, formatOptions],
     )
 
     const onMonthSelectHandler = useCallback(
@@ -170,11 +176,15 @@ const Calender: FunctionComponent<ICalenderProps> = ({ value, events, formatOpti
                 () => {
                     setCalenderDate(
                         parseBSDate(
-                            stitchDate({
-                                year: calenderDate.bsYear,
-                                month,
-                                day: calenderDate.bsDay,
-                            }),
+                            stitchDate(
+                                {
+                                    year: calenderDate.bsYear,
+                                    month,
+                                    day: calenderDate.bsDay,
+                                },
+                                formatOptions,
+                            ),
+                            formatOptions,
                         ),
                     )
                 },
@@ -185,13 +195,13 @@ const Calender: FunctionComponent<ICalenderProps> = ({ value, events, formatOpti
                 },
             )
         },
-        [calenderDate],
+        [calenderDate, formatOptions],
     )
 
     const onDaySelectHandler = useCallback((date: SplittedDate) => {
         executionDelegation(
             () => {
-                const newDate = parseBSDate(stitchDate(date))
+                const newDate = parseBSDate(stitchDate(date, formatOptions), formatOptions)
 
                 setCalenderDate(newDate)
                 setSelectedDate(newDate)

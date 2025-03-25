@@ -1,6 +1,6 @@
 import React, { useMemo } from "react"
 import "../NepaliDatePicker.scss"
-import { ConfigProvider } from "./Config"
+import { CalenderConfig, ConfigProvider } from "./Config"
 import NepaliDatePicker from "./NepaliDatePicker"
 import { ENGLISH, NEPALI, TDateSeparator, TNepaliDatePicker } from "./Types"
 
@@ -17,10 +17,12 @@ const NepaliDatePickerWrapper = <GDateSeparator extends TDateSeparator>(props: T
 
     return (
         <ConfigProvider
-            maxYear={props.maxYear}
-            minYear={props.minYear}
+            maxYear={props.maxYear ?? CalenderConfig.maxBSYear}
+            minYear={props.minYear ?? CalenderConfig.minBSYear}
             theme={props.theme}
             weekDayLabelSize={props.weekDayLabelSize}
+            formatOptions={props.formatOptions}
+            currentLocale={calenderOptions.calenderLocale}
         >
             <NepaliDatePicker
                 {...{

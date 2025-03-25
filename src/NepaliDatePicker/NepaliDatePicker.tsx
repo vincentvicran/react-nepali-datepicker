@@ -4,8 +4,8 @@ import { ADToBS } from "bikram-sambat-js"
 import { Calender } from "./Calender"
 import { useConfig } from "./Config"
 import { useTrans } from "./Locale"
-import { ENGLISH, NepaliDatepickerEvents, TDateSeparator, TLocaleType, TNepaliDatePicker } from "./Types"
-import { childOf, executionDelegation, stitchDate } from "./Utils/common"
+import { ENGLISH, NepaliDatepickerEvents, TDateSeparator, TNepaliDatePicker } from "./Types"
+import { childOf, defaultFormatOptions, executionDelegation, stitchDate } from "./Utils/common"
 
 const NepaliDatePicker = <GDateSeparator extends TDateSeparator>(props: TNepaliDatePicker<GDateSeparator>) => {
     const {
@@ -19,7 +19,7 @@ const NepaliDatePicker = <GDateSeparator extends TDateSeparator>(props: TNepaliD
         placeholder,
         style,
         inputStyle,
-        formatOptions,
+        formatOptions = defaultFormatOptions,
     } = props
 
     const nepaliDatePickerWrapper = useRef<HTMLDivElement>(null)
@@ -30,7 +30,7 @@ const NepaliDatePicker = <GDateSeparator extends TDateSeparator>(props: TNepaliD
 
     const { setConfig, getConfig } = useConfig()
 
-    const { numberTrans } = useTrans(getConfig<TLocaleType>("currentLocale"))
+    const { numberTrans } = useTrans(getConfig("currentLocale"))
 
     const toEnglish = useCallback((val: string): string => numberTrans(val, ENGLISH), [])
     const returnDateValue = useCallback(
@@ -110,7 +110,7 @@ const NepaliDatePicker = <GDateSeparator extends TDateSeparator>(props: TNepaliD
                 },
                 () => {
                     if (onSelect) {
-                        onSelect(returnDateValue(stitchDate(selectedDate)))
+                        onSelect(returnDateValue(stitchDate(selectedDate, formatOptions)))
                     }
                 },
             )
@@ -145,7 +145,7 @@ const NepaliDatePicker = <GDateSeparator extends TDateSeparator>(props: TNepaliD
         // Escape separator for regex use
         const escapedSeparator = formatOptions?.separator.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
 
-        let positions: [number, number] = [2, 5]
+        let positions: [number, number] = [3, 5]
         let pattern: string = ""
 
         // Improved regex patterns for day, month, year
@@ -187,7 +187,6 @@ const NepaliDatePicker = <GDateSeparator extends TDateSeparator>(props: TNepaliD
 
             // Build the formatted string
             for (let i = 0; i < 10; i++) {
-                console.log({ i, result, digitIndex, digitsOnly, positionTrue: positions.includes(i) })
                 if (
                     positions.includes(i) &&
                     digitIndex > 0 &&
@@ -222,7 +221,6 @@ const NepaliDatePicker = <GDateSeparator extends TDateSeparator>(props: TNepaliD
         if (digitCount > 0) {
             let formatted = formatDateString(sanitized)
 
-            console.log({ formatted })
             setDate(formatted)
 
             onInputChange(formatted)

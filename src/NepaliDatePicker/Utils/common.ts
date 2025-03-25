@@ -1,19 +1,20 @@
-import { ADToBS, BSToAD } from "bikram-sambat-js"
+import { BSToAD } from "bikram-sambat-js"
 import { CalenderData } from "../Config"
 import { BS, ParsedDate, SplittedDate, TDateFormatOptions, TDateSeparator, voidFunction } from "../Types"
 import {
+    getTodayADDate,
     giveValidAdDay,
     giveValidAdMonth,
     giveValidAdYear,
+    giveValidBsDay,
+    giveValidBsMonth,
+    giveValidBsYear,
     validateAdDay,
     validateAdMonth,
     validateAdYear,
     validateBsDay,
     validateBsMonth,
     validateBsYear,
-    validatedBsDay,
-    validatedBsMonth,
-    validatedBsYear,
 } from "./DateValidations"
 
 export const defaultFormatOptions: TDateFormatOptions<TDateSeparator> = {
@@ -42,11 +43,15 @@ export const executionDelegation = (execution: voidFunction, delegatedExecution:
     })
 }
 
-export const splitDate = (
-    date: string,
-    { separator, format }: TDateFormatOptions<TDateSeparator> = defaultFormatOptions,
-): SplittedDate => {
-    const parts = date.split(separator)
+export const dateSplitterWithSeparator = (date: string, separator: TDateSeparator): [string, string, string] => {
+    const parts = date.replaceAll(separator, "-").split("-")
+
+    return parts as [string, string, string]
+}
+
+export const splitDate = (date: string, { separator, format }: TDateFormatOptions<TDateSeparator>): SplittedDate => {
+    const parts = dateSplitterWithSeparator(date, separator)
+
     let year: string, month: string, day: string
 
     if (format === `YYYY${separator}MM${separator}DD`) {
@@ -66,10 +71,7 @@ export const splitDate = (
     }
 }
 
-export const stitchDate = (
-    date: SplittedDate,
-    { separator, format }: TDateFormatOptions<TDateSeparator> = defaultFormatOptions,
-): string => {
+export const stitchDate = (date: SplittedDate, { separator, format }: TDateFormatOptions<TDateSeparator>): string => {
     let returnDate: string = `${date.year}${separator}${zeroPad(date.month)}${separator}${zeroPad(date.day)}`
     if (format === `YYYY${separator}MM${separator}DD`) {
         returnDate = `${date.year}${separator}${zeroPad(date.month)}${separator}${zeroPad(date.day)}`
@@ -83,7 +85,7 @@ export const stitchDate = (
     return returnDate
 }
 
-export const validateDateObject = (date: SplittedDate, type: string = BS) => {
+export const giveValidateObject = (date: SplittedDate, type: string = BS) => {
     const { year, month, day } = date
 
     if (type === BS) {
@@ -99,28 +101,50 @@ export const validateDateObject = (date: SplittedDate, type: string = BS) => {
     validateAdDay(day)
 }
 
-export const giveValidDateObject = (date: SplittedDate, type: string = BS): SplittedDate => {
-    const today = parseBSDate(ADToBS(new Date()))
+export const giveValidDateObject = (date: SplittedDate, type: "BS" | "AD" = BS): SplittedDate => {
+    const todayADDate = getTodayADDate()
 
-    const splittedDate = splitDate(today.adDate.toString())
+    const splittedADDate = splitDate(todayADDate, {
+        separator: "-",
+        format: "YYYY-MM-DD",
+    })
     const { year, month, day } = date
 
-    const validBufferYear = isNaN(year) ? splittedDate.year : year
-    const validBufferMonth = isNaN(month) ? splittedDate.month : month
-    const validBufferDay = isNaN(day) ? splittedDate.day : day
-
     if (type === BS) {
+        const todayBSDate = BSToAD(todayADDate)
+
+        const splittedBSDate = splitDate(todayBSDate, {
+            separator: "-",
+            format: "YYYY-MM-DD",
+        })
+
+        const bsYearValidity = giveValidBsYear(year || splittedBSDate.year)
+        const bsMonthValidity = giveValidBsMonth(month || splittedBSDate.month)
+        const bsDayValidity = giveValidBsDay(day || splittedBSDate.day)
+
+        const validBufferYear = isNaN(year) || !bsYearValidity.validity ? bsYearValidity.message : year
+        const validBufferMonth = isNaN(month) || !bsMonthValidity.validity ? bsMonthValidity.message : month
+        const validBufferDay = isNaN(day) || !bsDayValidity.validity ? bsDayValidity.message : day
+
         return {
-            year: validatedBsYear(validBufferYear),
-            month: validatedBsMonth(validBufferMonth),
-            day: validatedBsDay(validBufferDay),
+            year: giveValidBsYear(validBufferYear).message,
+            month: giveValidBsMonth(validBufferMonth).message,
+            day: giveValidBsDay(validBufferDay).message,
         }
     }
 
+    const adYearValidity = giveValidAdYear(year || splittedADDate.year)
+    const adMonthValidity = giveValidAdMonth(month || splittedADDate.month)
+    const adDayValidity = giveValidAdDay(day || splittedADDate.day)
+
+    const validBufferYear = isNaN(year) || !adYearValidity.validity ? adYearValidity.message : year
+    const validBufferMonth = isNaN(month) || !adMonthValidity.validity ? adMonthValidity.message : month
+    const validBufferDay = isNaN(day) || !adDayValidity.validity ? adDayValidity.message : day
+
     return {
-        year: giveValidAdYear(validBufferYear),
-        month: giveValidAdMonth(validBufferMonth),
-        day: giveValidAdDay(validBufferDay),
+        year: giveValidAdYear(validBufferYear).message,
+        month: giveValidAdMonth(validBufferMonth).message,
+        day: giveValidAdDay(validBufferDay).message,
     }
 }
 
@@ -133,7 +157,7 @@ export const getNumberOfDaysInBSMonth = (yearMonth: { year: number; month: numbe
     const totalYears = year + 1 - CalenderData.minBSYear
     const bsMonthData: number[] = CalenderData.bsMonthCalculatedData[month - 1]
 
-    return bsMonthData.reduce((numberOfDays: number, monthData: number, index: number) => {
+    return bsMonthData?.reduce((numberOfDays: number, monthData: number, index: number) => {
         if (monthData === 0 || numberOfDays !== 0) {
             return numberOfDays
         }
@@ -168,16 +192,30 @@ export const getNumberOfDaysInBSMonth = (yearMonth: { year: number; month: numbe
     }, 0)
 }
 
-export const parseBSDate = (
-    date: string,
-    formatOptions: TDateFormatOptions<TDateSeparator> = defaultFormatOptions,
-): ParsedDate => {
-    const { year, month, day }: SplittedDate = splitDate(date, formatOptions)
+export const parseBSDate = (date: string, formatOptions: TDateFormatOptions<TDateSeparator>): ParsedDate => {
+    const ogSplittedDate: SplittedDate = splitDate(date, formatOptions)
 
-    validateDateObject({ year, month, day })
+    const { year, month, day } = giveValidDateObject(ogSplittedDate, "BS")
 
-    const adDate = new Date(BSToAD(date))
-    const firstAdDateInBSMonth = new Date(BSToAD(stitchDate({ year, month, day: 1 }, formatOptions)))
+    const validStitchedDate = stitchDate(
+        { year, month, day },
+        {
+            separator: "-",
+            format: "YYYY-MM-DD",
+        },
+    )
+
+    const adDate = new Date(BSToAD(validStitchedDate))
+
+    // ! This is the first date of the month in BS, format options are hardcoded because BSToAD does not support separator ".".
+    const firstBsDateInBSMonth = stitchDate(
+        { year, month, day: 1 },
+        {
+            separator: "-",
+            format: "YYYY-MM-DD",
+        },
+    )
+    const firstAdDateInBSMonth = new Date(BSToAD(firstBsDateInBSMonth))
     const numberOfDaysInMonth = getNumberOfDaysInBSMonth({ year, month })
 
     return {

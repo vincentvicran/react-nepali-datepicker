@@ -1,8 +1,9 @@
 import React, { FunctionComponent, useMemo, useState } from "react"
+
 import { useConfig } from "../../Config"
 import { DropDown, OptionType } from "../../DropDown"
 import { useTrans } from "../../Locale"
-import { ParsedDate, TLocaleType } from "../../Types"
+import { ParsedDate } from "../../Types"
 import { range } from "../../Utils/common"
 
 interface YearPickerProps {
@@ -13,7 +14,7 @@ interface YearPickerProps {
 const YearPicker: FunctionComponent<YearPickerProps> = ({ date, onSelect }) => {
     const [showDropdown, setShowDropdown] = useState(false)
     const { getConfig } = useConfig()
-    const { numberTrans } = useTrans(getConfig<TLocaleType>("currentLocale"))
+    const { numberTrans } = useTrans(getConfig("currentLocale"))
 
     const currentYear: OptionType = useMemo((): OptionType => {
         const year = date.bsYear
