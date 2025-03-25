@@ -13,8 +13,8 @@ const useConfig = () => {
         })
     }
 
-    function getConfig<T>(key: keyof ConfigState): T {
-        return state[key] as any
+    function getConfig<T extends keyof ConfigState>(key: T): ConfigState[T] {
+        return state[key] as ConfigState[T]
     }
     return { setConfig, getConfig }
 }

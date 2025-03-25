@@ -1,3 +1,5 @@
+import CalenderConfig from "./CalenderConfig"
+
 export const months = {
     en: [
         "Baisakh",
@@ -16,23 +18,23 @@ export const months = {
     ne: ["बैशाख", "जेठ", "असार", "सावन", "भदौ", "असोज", "कार्तिक", "मंसिर", "पौष", "माघ", "फागुन", "चैत"],
 }
 
-export const weeksAbbr = {
-    en: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-    ne: ["आईत", "सोम", "मंगल", "बुध", "बिही", "शुक्र", "शनि"],
+export const weekDaysLabel = {
+    sm: {
+        en: ["S", "M", "T", "W", "T", "F", "S"],
+        ne: ["आ", "सो", "मं", "बु", "बि", "शु", "श"],
+    },
+    md: {
+        en: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        ne: ["आईत", "सोम", "मंगल", "बुध", "बिही", "शुक्र", "शनि"],
+    },
+    lg: {
+        en: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        ne: ["आईतबार", "सोमबार", "मंगलबार", "बुधबार", "बिहीबार", "शुक्रबार", "शनिबार"],
+    },
 }
 
-export const weeks = {
-    en: ["S", "M", "T", "W", "T", "F", "S"],
-    ne: ["आ", "सो", "मं", "बु", "बि", "शु", "श"],
-}
-
-export const weeksLarge = {
-    en: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-    ne: ["आईतबार", "सोमबार", "मंगलबार", "बुधबार", "बिहीबार", "शुक्रबार", "शनिबार"],
-}
-
-export const maxBSYear = 2100
-export const minBSYear = 1970
+export const maxBSYear = CalenderConfig.maxBSYear
+export const minBSYear = CalenderConfig.minBSYear
 
 export const bsMonthMaxDays = [
     [30, 31],

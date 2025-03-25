@@ -2,8 +2,8 @@ import { ADToBS } from "bikram-sambat-js"
 import React, { FunctionComponent, useCallback, useMemo } from "react"
 import { CalenderData, useConfig } from "../../../Config"
 import { useTrans } from "../../../Locale"
-import { ParsedDate, SplittedDate, Themes, TLocaleType } from "../../../Types"
-import { getNumberOfDaysInBSMonth, range, splitDate } from "../../../Utils/common"
+import { ParsedDate, SplittedDate } from "../../../Types"
+import { defaultFormatOptions, getNumberOfDaysInBSMonth, range, splitDate } from "../../../Utils"
 
 interface DayPickerBodyProps {
     selectedDate: ParsedDate | null
@@ -21,6 +21,13 @@ interface DayInfo {
 }
 
 const DayPickerBody: FunctionComponent<DayPickerBodyProps> = ({ selectedDate, calenderDate: date, onSelect }) => {
+    const { getConfig } = useConfig()
+    const { numberTrans } = useTrans(getConfig("currentLocale"))
+
+    const formatOptions = getConfig("formatOptions")
+
+    const currentTheme = getConfig("theme")
+
     const weeksInMonth = useMemo(
         () => Math.ceil((date.firstAdDayInBSMonth.getDay() + date.numberOfDaysInBSMonth) / 7) - 1,
         [date],
@@ -38,11 +45,6 @@ const DayPickerBody: FunctionComponent<DayPickerBodyProps> = ({ selectedDate, ca
         [previousYear],
     )
 
-    const { getConfig } = useConfig()
-    const { numberTrans } = useTrans(getConfig<TLocaleType>("currentLocale"))
-
-    const currentTheme = getConfig<Themes>("theme")
-
     const getDayInfo = useCallback(
         (weekNum: number, weekDayNum: number): DayInfo => {
             let day = weekNum * 7 + weekDayNum - date.firstAdDayInBSMonth.getDay()
@@ -59,7 +61,7 @@ const DayPickerBody: FunctionComponent<DayPickerBodyProps> = ({ selectedDate, ca
                 isCurrentMonth = false
             }
 
-            const today = splitDate(ADToBS(new Date()))
+            const today = splitDate(ADToBS(new Date()), formatOptions ?? defaultFormatOptions)
 
             const isToday = isCurrentMonth
                 ? today.day === day && today.month === date.bsMonth && today.year === date.bsYear
